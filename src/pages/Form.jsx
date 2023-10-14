@@ -5,6 +5,12 @@ import logo from '../assets/ISPSC_LOGO_new.png';
 import { useState } from 'react';
 import axios from 'axios';
 
+const apiEndpoints = {
+  userInfo: '/user-info',
+  personalInfo: '/personal-info',
+  educationalAttainment: '/educational-attainment',
+};
+
 const Form = () => {
   const [page, setPage] = useState(0);
   const [data, setData] = useState({
@@ -39,13 +45,47 @@ const Form = () => {
       regionorigin,
       province,
       residence,
+      educattainment,
+      profexam,
     } = data;
     e.preventDefault();
+    // try {
+    //   await axios.post('/register', {
+    //     username,
+    //     email,
+    //     password,
+    //     firstName,
+    //     lastName,
+    //     emailadd,
+    //     contactnumber,
+    //     civilstatus,
+    //     gender,
+    //     birthday,
+    //     regionorigin,
+    //     province,
+    //     residence,
+    //   });
+    //   alert('registration successful');
+    // } catch (error) {
+    //   alert('Registration failed');
+    //   console.log(error);
+    // }
+
     try {
-      await axios.post('/register', {
+      // POST request for User Info
+      const userInfoResponse = await axios.post(apiEndpoints.userInfo, {
         username,
         email,
         password,
+      });
+      console.log('User Info Created:', userInfoResponse.data);
+    } catch (error) {
+      console.error('Error creating User Info:', error);
+    }
+
+    // POST request for Personal Info
+    try {
+      const personalInfoResponse = await axios.post(apiEndpoints.personalInfo, {
         firstName,
         lastName,
         emailadd,
@@ -57,10 +97,26 @@ const Form = () => {
         province,
         residence,
       });
-      alert('registration successful');
+      console.log('Personal Info Created:', personalInfoResponse.data);
     } catch (error) {
-      alert('Registration failed');
-      console.log(error);
+      console.error('Error creating Personal Info:', error);
+    }
+
+    // POST request for Educational Attainment
+    try {
+      const educationalAttainmentResponse = await axios.post(
+        apiEndpoints.educationalAttainment,
+        {
+          educattainment,
+          profexam,
+        }
+      );
+      console.log(
+        'Educational Attainment Created:',
+        educationalAttainmentResponse.data
+      );
+    } catch (error) {
+      console.error('Error creating Educational Attainment:', error);
     }
   };
 
